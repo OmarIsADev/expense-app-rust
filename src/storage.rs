@@ -16,8 +16,7 @@ pub fn read_expenses() -> Vec<Expense> {
     };
 
     let mut contents = String::new();
-    file.read_to_string(&mut contents)
-        .expect("Failed to read file");
+    let _ = file.read_to_string(&mut contents);
     let data: Vec<Expense> = match serde_json::from_str(&contents) {
         Ok(data) => data,
         Err(_) => Vec::new(),
@@ -39,9 +38,9 @@ pub fn write_expenses(data: Expense) -> &'static str {
     // Code to write expenses to JSON file
     let mut expense = read_expenses();
     expense.push(data);
-    
+
     let json = serde_json::to_string(&expense).unwrap();
-    
+
     let mut file = File::create(FILE_PATH).expect("Failed to create file");
     file.write_all(json.as_bytes())
         .expect("Failed to write file");
@@ -59,8 +58,7 @@ pub fn modify_expense(index: usize, data: Expense) -> &'static str {
         file.write_all(json.as_bytes())
             .expect("Failed to write file");
         "Done"
-    }
-    else {
+    } else {
         "Invalid index"
     }
 }
@@ -77,8 +75,7 @@ pub fn delete_expense(index: usize) -> &'static str {
         file.write_all(json.as_bytes())
             .expect("Failed to write file");
         "Done"
-    }
-    else {
+    } else {
         "Invalid index"
     }
 }
